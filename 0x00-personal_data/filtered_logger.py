@@ -66,3 +66,25 @@ def get_db() -> connector.connection.MySQLConnection:
     )
 
     return connection_state
+
+
+def main() -> None:
+    """returns nothing"""
+    logger = get_logger()
+    db_connection = get_db()
+
+    cursor = db_connection.cursor(dictionary=True)
+    query = "SELECT * FROM users"
+    cursor.execute(query)
+
+    for row in cursor.fetchall():
+        message = "; ".join([f"{key}={value}" for key, value in row.items()])
+        logger.info(message)
+
+    cursor.close()
+    db_connection.close()
+
+
+if __name__ == '__main__':
+    """run the main programme"""
+    main()
