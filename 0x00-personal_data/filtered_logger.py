@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """filtered logger module"""
 import os
-from typing import List
+from typing import List, Union
 import re
 import logging
 from mysql import connector
@@ -17,7 +17,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields):
+    def __init__(self, fields: List[str]):
         self.fields = fields
         super(RedactingFormatter, self).__init__(self.FORMAT)
 
@@ -49,7 +49,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> connector.connection.MySQLConnection:
+def get_db() -> Union[PooledMySQLConnection, MySQLConnection, CMySQLConnection]:
     """Get access to the database"""
     host = os.environ.get("PERSONAL_DATA_DB_HOST")
     user = os.environ.get("PERSONAL_DATA_DB_USERNAME")
