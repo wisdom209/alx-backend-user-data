@@ -23,7 +23,7 @@ class RedactingFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         """format a record"""
-        filtered = filter_datum(self.fields, self.REDACTION, record.msg, self.SEPARATOR)  # nopep8
+        filtered = filter_datum(self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR)  # nopep8
         log_record = logging.LogRecord("my_logger", logging.INFO, None, None, re.sub(';', '; ', filtered).strip(), None, None)  # nopep8
         formatter = logging.Formatter(self.FORMAT)
         return formatter.format(log_record)
