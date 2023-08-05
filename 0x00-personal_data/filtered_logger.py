@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """filtered logger module"""
 import os
-from typing import List, Union
+from typing import List
 import re
 import logging
 from mysql import connector
@@ -49,7 +49,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> Union[PooledMySQLConnection, MySQLConnection, CMySQLConnection]:
+def get_db() -> connector.connection.MySQLConnection:
     """Get access to the database"""
     host = os.environ.get("PERSONAL_DATA_DB_HOST")
     user = os.environ.get("PERSONAL_DATA_DB_USERNAME")
