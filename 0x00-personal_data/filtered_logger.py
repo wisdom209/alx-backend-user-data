@@ -29,7 +29,7 @@ class RedactingFormatter(logging.Formatter):
         return formatter.format(log_record)
 
 
-def filter_datum(fields: List, redaction: str, message: str, separator: str) -> str:  # nopep8
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:  # nopep8
     """filter user data function"""
     for field in fields:
         sub_pattern = fr'{field}.*?(?={separator})'
