@@ -17,12 +17,14 @@ auth = None
 if getenv('AUTH_TYPE') == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
+if getenv('AUTH_TYPE') == 'basic_auth':
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
 
 
 @app.before_request
 def run_before_request():
     """runs before a request"""
-    print("hello")
     if auth is not None:
         excluded_paths = ['/api/v1/status/',
                           '/api/v1/unauthorized/', '/api/v1/forbidden/']
