@@ -39,7 +39,7 @@ def session_login() -> str:
     return res
 
 
-@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)  # nopep8
 def session_logout() -> str:
     """ POST SESSION DETAILS
     """
