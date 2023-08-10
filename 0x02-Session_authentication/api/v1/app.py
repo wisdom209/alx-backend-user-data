@@ -29,12 +29,14 @@ if getenv('AUTH_TYPE') == 'session_auth':
 def run_before_request():
     """runs before a request"""
     if auth is not None:
-        excluded_paths = ['/api/v1/status/',
+        excluded_paths = ['/api/v1/status/', '/api/v1/auth_session/login/',
                           '/api/v1/unauthorized/', '/api/v1/forbidden/']
         needs_auth = auth.require_auth(request.path, excluded_paths)
         if needs_auth:
-            if auth.authorization_header(request) is None:
-                abort(401)
+            if auth.session_cookie(request) is None:  # nopep8
+                if auth.authorization_header(request) is None:
+                    abort(401)
+
             if auth.current_user(request) is None:
                 abort(403)
             else:
