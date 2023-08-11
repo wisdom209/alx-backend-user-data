@@ -18,6 +18,7 @@ class SessionExpAuth(SessionAuth):
             self.session_duration = 0
 
     def create_session(self, user_id: str = None) -> str:
+        """create the session"""
         from datetime import datetime
         try:
             session_id = super().create_session(user_id)
@@ -36,6 +37,7 @@ class SessionExpAuth(SessionAuth):
         return session_id
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
+        """get user id for session"""
         if not session_id:
             return None
         if not self.user_id_by_session_id.get(session_id):
