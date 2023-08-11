@@ -23,6 +23,9 @@ if getenv('AUTH_TYPE') == 'basic_auth':
 if getenv('AUTH_TYPE') == 'session_auth':
     from api.v1.auth.session_auth import SessionAuth
     auth = SessionAuth()
+if getenv('AUTH_TYPE') == 'session_exp_auth':
+    from api.v1.auth.session_exp_auth import SessionExpAuth
+    auth = SessionExpAuth()
 
 
 @app.before_request
@@ -65,4 +68,4 @@ def not_found() -> str:
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
-    app.run(host=host, port=port, debug=True)
+    app.run(host=host, port=port)
