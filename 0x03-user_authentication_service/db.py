@@ -41,7 +41,7 @@ class DB:
         session.commit()
         return user
 
-    def find_user_by(self, **kwargs: dict) -> User:
+    def find_user_by(self, **kwargs):
         """find a user"""
         arg_list = ['id', 'hashed_password',
                     'session_id', 'email', 'reset_token']
@@ -53,5 +53,11 @@ class DB:
         if not found_user:
             raise (NoResultFound)
         return found_user
-    
 
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Update user"""
+        session = self._session
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            setattr(user, key, value)
+        session.commit()
