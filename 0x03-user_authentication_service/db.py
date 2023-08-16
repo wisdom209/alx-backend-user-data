@@ -49,8 +49,9 @@ class DB:
             if key not in arg_list:
                 raise (InvalidRequestError)
         session = self._session
-        found_user = session.query(User).filter_by(
-            email=kwargs['email']).first()
+        found_user = session.query(User).filter_by(**kwargs).first()
         if not found_user:
             raise (NoResultFound)
         return found_user
+    
+
