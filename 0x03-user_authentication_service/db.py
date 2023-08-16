@@ -41,7 +41,7 @@ class DB:
         session.commit()
         return user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
         """find a user"""
         arg_list = ['id', 'hashed_password',
                     'session_id', 'email', 'reset_token']
