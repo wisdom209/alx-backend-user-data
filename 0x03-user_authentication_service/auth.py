@@ -43,3 +43,10 @@ def _hash_password(password: str) -> bytes:
     salt = bcrypt.gensalt()
     hash_pass = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hash_pass
+
+
+def _generate_uuid() -> str:
+    """generate unique id"""
+    from uuid import uuid4
+    unique_id = str(uuid4())
+    return unique_id
