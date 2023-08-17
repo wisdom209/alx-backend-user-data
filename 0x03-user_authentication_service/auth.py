@@ -66,6 +66,16 @@ class Auth:
         except NoResultFound:
             return None
 
+    def get_reset_password_token(self, email: str) -> str:
+        """get reset token"""
+        try:
+            user = self._db.find_user_by(email=email)
+            new_token = _generate_uuid()
+            self._db.update_user(user.id, session_id=new_token)
+            return new_token
+        except NoResultFound:
+            raise ValueError("User already exists")
+
 
 def _hash_password(password: str) -> bytes:
     """hash password"""
