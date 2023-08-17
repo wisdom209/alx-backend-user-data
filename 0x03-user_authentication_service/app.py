@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Basic flask app"""
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 app = Flask(__name__)
 
 
 @app.route('/')
-def welcome():
+def welcome() -> Response:
     """welcome route"""
-    return jsonify({"message": "Bienvenue"}), 200
+    response_msg = {"message": "Bienvenue"}
+    return jsonify(response_msg)
 
 
 if __name__ == '__main__':
