@@ -46,7 +46,7 @@ def login() -> Response:
 
         return_msg = {"email": f"{email}", "message": "logged in"}
 
-        resp = make_response(jsonify(return_msg))
+        resp = make_response(return_msg)
         resp.set_cookie('session_id', session_id)
         return resp
     except Exception:
