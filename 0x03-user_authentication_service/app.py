@@ -34,36 +34,38 @@ def users() -> Response:
 @app.route('/sessions', methods=['POST'])
 def login() -> Response:
     """login route"""
-    try:
-        email = request.form['email']
-        password = request.form['password']
+    if request.method == 'POST':
+        try:
+            email = request.form['email']
+            password = request.form['password']
 
-        valid_login = auth_obj.valid_login(email, password)
+            valid_login = auth_obj.valid_login(email, password)
 
-        if not valid_login:
+            if not valid_login:
+                abort(401)
+
+            session_id = auth_obj.create_session(email)
+
+            return_msg = {"email": f"{email}", "message": "logged in"}
+
+            resp = make_response(return_msg)
+            resp.set_cookie('session_id', session_id)
+            return resp
+        except Exception:
             abort(401)
-
-        session_id = auth_obj.create_session(email)
-
-        return_msg = {"email": f"{email}", "message": "logged in"}
-
-        resp = make_response(return_msg)
-        resp.set_cookie('session_id', session_id)
-        return resp
-    except Exception:
-        abort(401)
 
 
 @app.route('/sessions', methods=['DELETE'])
 def logout() -> Response:
     """logout function"""
-    session_id = request.cookies.get('session_id')
-    user = auth_obj.get_user_from_session_id(session_id)
-    if user:
-        auth_obj.destroy_session(user.id)
-        redirect(url_for('/'))
-    else:
-        abort(403)
+    if request.method == 'DELETE':
+        session_id = request.cookies.get('session_id')
+        user = auth_obj.get_user_from_session_id(session_id)
+        if user:
+            auth_obj.destroy_session(user.id)
+            return redirect('/')
+        else:
+            abort(403)
 
 
 @app.route('/profile')
