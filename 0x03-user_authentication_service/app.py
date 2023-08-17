@@ -34,25 +34,21 @@ def users() -> Response:
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login() -> str:
     """login route"""
-    if request.method == 'POST':
-        try:
-            email = request.form.get('email')
-            password = request.form.get('password')
+    email = request.form.get('email')
+    password = request.form.get('password')
 
-            valid_login = auth_obj.valid_login(email, password)
+    valid_login = auth_obj.valid_login(email, password)
 
-            if not valid_login:
-                abort(401)
+    if not valid_login:
+        abort(401)
 
-            session_id = auth_obj.create_session(email)
+    session_id = auth_obj.create_session(email)
 
-            return_msg = {"email": f"{email}", "message": "logged in"}
+    return_msg = {"email": f"{email}", "message": "logged in"}
 
-            resp = make_response(jsonify(return_msg))
-            resp.set_cookie('session_id', session_id)
-            return resp
-        except Exception:
-            abort(401)
+    resp = jsonify(return_msg)
+    resp.set_cookie('session_id', session_id)
+    return resp
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
@@ -63,7 +59,7 @@ def logout():
         user = auth_obj.get_user_from_session_id(session_id)
         if user:
             auth_obj.destroy_session(user.id)
-            return redirect('/')
+            return redirect('/'), 301
         else:
             abort(403)
 

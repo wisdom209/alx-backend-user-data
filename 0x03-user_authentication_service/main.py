@@ -3,12 +3,43 @@
 Main file
 """
 from auth import Auth
+import requests
 
-email = 'bob@bob.com'
-password = 'MyPwdOfBob'
-auth = Auth()
 
-auth.register_user(email, password)
+def register_user(email: str, password: str) -> None:
+    """register user"""
+    url = 'http://localhost:5000/users'
+    data = {'email': email, 'password': password}
+    result = requests.post(url, data=data)
+    assert result.status_code
 
-print(auth.create_session(email))
-print(auth.create_session("unknown@email.com"))
+
+def log_in_wrong_password(email: str, password: str) -> None:
+    """log in wrong password"""
+    url = 'http://localhost:5000/sessions'
+    data = {'email': email, 'password': password}
+    result = requests.post(url, data=data)
+    assert result.status_code == 401, "unauthorized"
+
+
+def profile_unloggged() -> None:
+    """unlog profile"""
+    url = 'http://localhost:5000/sessions'
+    result = requests.delete(url)
+
+
+def log_in(email: str, password: str) -> str:
+    """log in"""
+    url = 'http://localhost:5000/sessions'
+    data = {'email': email, 'password': password}
+    result = requests.post(url, data=data)
+
+
+EMAIL = "guillaume@holberton.io"
+PASSWD = "b4l0u"
+NEW_PASSWD = "t4rt1fl3tt3"
+
+
+if __name__ == "__main__":
+    register_user(EMAIL, PASSWD)
+    log_in_wrong_password(EMAIL, NEW_PASSWD)
