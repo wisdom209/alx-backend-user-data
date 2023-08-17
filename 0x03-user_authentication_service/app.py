@@ -31,24 +31,22 @@ def users() -> Response:
         return jsonify(return_msg), 400
 
 
-@app.route('/sessions', methods=['POST'], strict_slashes=False)
+@app.route("/sessions", strict_slashes=False, methods=["POST"])
 def login():
-    """login route"""
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    valid_login = auth_obj.valid_login(email, password)
-
-    if not valid_login:
+    """login function"""
+    email = request.form.get("email")
+    password = request.form.get("password")
+    user = auth_obj.valid_login(email, password)
+    if not user:
         abort(401)
-
-    session_id = auth_obj.create_session(email)
-
-    return_msg = {"email": f"{email}", "message": "logged in"}
-
-    resp = jsonify(return_msg)
-    resp.set_cookie('session_id', session_id)
-    return resp
+    else:
+        session_id = auth_obj.create_session(email)
+        value = {
+            "email": "{}".format(email),
+            "message": "logged in"}
+        response = jsonify(value)
+        response.set_cookie("session_id", session_id)
+        return response
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
