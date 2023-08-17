@@ -36,8 +36,8 @@ def login() -> Response:
     """login route"""
     if request.method == 'POST':
         try:
-            email = request.form['email']
-            password = request.form['password']
+            email = request.form.get('email')
+            password = request.form.get('password')
 
             valid_login = auth_obj.valid_login(email, password)
 
