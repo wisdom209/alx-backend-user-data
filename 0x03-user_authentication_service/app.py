@@ -49,7 +49,7 @@ def login() -> Response:
         resp = make_response(jsonify(return_msg))
         resp.set_cookie('session_id', session_id)
         return resp
-    except:
+    except Exception:
         abort(401)
 
 
