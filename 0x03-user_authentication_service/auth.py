@@ -71,10 +71,10 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             new_token = _generate_uuid()
-            self._db.update_user(user.id, session_id=new_token)
+            self._db.update_user(user.id, reset_token=new_token)
             return new_token
         except NoResultFound:
-            raise ValueError("User already exists")
+            raise ValueError
 
 
 def _hash_password(password: str) -> bytes:
