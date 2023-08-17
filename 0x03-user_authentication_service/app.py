@@ -2,7 +2,8 @@
 """Basic flask app"""
 from auth import Auth
 from db import DB
-from flask import Flask, jsonify, Response, request, abort, make_response
+from flask import Flask, jsonify, Response, request,\
+    abort, make_response, url_for, redirect
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 app = Flask(__name__)
@@ -51,6 +52,18 @@ def login() -> Response:
         return resp
     except Exception:
         abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'])
+def logout() -> Response:
+    """logout function"""
+    session_id = request.cookies.get('session_id')
+    user = auth_obj.get_user_from_session_id(session_id)
+    if user:
+        auth_obj.destroy_session(user.id)
+        redirect(url_for('/'))
+    else:
+        abort(403)
 
 
 if __name__ == '__main__':
