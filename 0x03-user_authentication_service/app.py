@@ -32,7 +32,7 @@ def users() -> Response:
 
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
-def login() -> Response:
+def login() -> str:
     """login route"""
     if request.method == 'POST':
         try:
@@ -56,7 +56,7 @@ def login() -> Response:
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-def logout() -> Response:
+def logout():
     """logout function"""
     if request.method == 'DELETE':
         session_id = request.cookies.get('session_id')
@@ -69,7 +69,7 @@ def logout() -> Response:
 
 
 @app.route('/profile', strict_slashes=False)
-def profile() -> Response:
+def profile() -> str:
     """get user profile function"""
     session_id = request.cookies.get('session_id')
     user = auth_obj.get_user_from_session_id(session_id)
