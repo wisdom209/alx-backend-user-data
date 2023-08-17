@@ -31,7 +31,7 @@ def users() -> Response:
         return jsonify(return_msg), 400
 
 
-@app.route('/sessions', methods=['POST'])
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login() -> Response:
     """login route"""
     if request.method == 'POST':
@@ -48,14 +48,14 @@ def login() -> Response:
 
             return_msg = {"email": f"{email}", "message": "logged in"}
 
-            resp = make_response(return_msg)
+            resp = make_response(jsonify(return_msg))
             resp.set_cookie('session_id', session_id)
             return resp
         except Exception:
             abort(401)
 
 
-@app.route('/sessions', methods=['DELETE'])
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> Response:
     """logout function"""
     if request.method == 'DELETE':
@@ -68,7 +68,7 @@ def logout() -> Response:
             abort(403)
 
 
-@app.route('/profile')
+@app.route('/profile', strict_slashes=False)
 def profile() -> Response:
     """get user profile function"""
     session_id = request.cookies.get('session_id')
