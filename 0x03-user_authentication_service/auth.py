@@ -31,7 +31,9 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             password = password.encode('utf-8')
-            pass_hash = user.hashed_password.encode('utf-8')
+            pass_hash = user.hashed_password
+            if (type(user.hashed_password) == str):
+                pass_hash = user.hashed_password.encode('utf-8')
             checkpass = bcrypt.checkpw(password, pass_hash)
             return checkpass
         except NoResultFound:
@@ -80,7 +82,9 @@ class Auth:
         try:
             user = self._db.find_user_by(reset_token=reset_token)
             pass_hash = _hash_password(password)
-            self._db.update_user(user.id, password=pass_hash, reset_token=None)
+            user = self._db.update_user(
+                user.id, hashed_password=pass_hash, reset_token=None)
+
         except NoResultFound:
             raise ValueError
 
