@@ -41,12 +41,14 @@ def login():
         abort(401)
     else:
         session_id = auth_obj.create_session(email)
-        value = {
-            "email": "{}".format(email),
-            "message": "logged in"}
-        response = jsonify(value)
-        response.set_cookie("session_id", session_id)
-        return response
+        if (session_id):
+            value = {
+                "email": "{}".format(email),
+                "message": "logged in"}
+            response = jsonify(value)
+            response.set_cookie("session_id", session_id)
+            return response
+        abort(401)
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
