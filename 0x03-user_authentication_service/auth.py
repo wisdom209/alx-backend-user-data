@@ -45,7 +45,7 @@ class Auth:
             self._db.update_user(user.id, session_id=user.session_id)
             return user.session_id
         except NoResultFound:
-            pass
+            return None
 
     def get_user_from_session_id(self, session_id: str) -> User:
         """get a user by their session id"""
