@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 """Basic flask app"""
 from auth import Auth
-from db import DB
-from flask import Flask, jsonify, Response, request,\
-    abort, make_response, url_for, redirect
-from sqlalchemy.exc import InvalidRequestError
-from sqlalchemy.orm.exc import NoResultFound
+from flask import Flask, jsonify, request,\
+    abort, redirect
 app = Flask(__name__)
 AUTH = Auth()
 
 
 @app.route('/')
-def welcome() -> Response:
+def welcome():
     """welcome route"""
     response_msg = {"message": "Bienvenue"}
     return jsonify(response_msg)
 
 
 @app.route('/users', methods=['POST'])
-def users() -> Response:
+def users():
     """users function"""
     try:
         email = request.form['email']
@@ -32,7 +29,7 @@ def users() -> Response:
 
 
 @app.route("/sessions", strict_slashes=False, methods=["POST"])
-def login() -> Response:
+def login():
     """login function"""
     email = request.form.get("email")
     password = request.form.get("password")
@@ -65,7 +62,7 @@ def logout():
 
 
 @app.route('/profile', strict_slashes=False)
-def profile() -> str:
+def profile():
     """get user profile function"""
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
@@ -88,7 +85,7 @@ def get_reset_password_token():
 
 
 @app.route('/reset_password', methods=['PUT'], strict_slashes=False)
-def update_password() -> Response:
+def update_password():
     """get reset password token"""
     try:
         email = request.form.get('email')
